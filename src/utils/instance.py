@@ -27,11 +27,23 @@ def instance(size : tuple, plot : bool = False):
     return instance
 
 def partition(instance):
-    _, depots, _, c = instance
+    _, depots, _, customers = instance
     D = len(depots)
-    c = np.array(c).astype(float)
-    c = np.array_split(c, D)
-    partition = {i: c[i] for i in range(D)}
+
+    kmeans = KMeans(n_clusters = D, init = depots, n_init = 1)
+    depots = np.array(depots).astype(int)
+    customers = np.array(customers).astype(float)
+    kmeans.fit(customers)
+    assign = kmeans.labels_
+    dist, index = graph(instance)
+    for i in range(len(assign)):
+        W = sum(dist[index[tuple(customers[i])], d] for d in range(D))
+        weights = [(1 - dist[index[tuple(customers[i])], d]) / W for d in range(D)]
+        assign[i] = random.choices([0, 1, 2], weights = weights)[0]
+
+    partition = {d: [] for d in range(D)}
+    for i, d in enumerate(assign):
+        partition[d].append(customers[i])
 
     return partition
 
@@ -72,7 +84,7 @@ def graph(instance):
 def clarkeWright(instance):
     size, depots, r, c = instance
     N, D = size
-    customers = _partition(instance)
+    customers = partition(instance)
     dist, index = graph(instance)
     routes = {i: [] for i in range(D)}
 
@@ -145,6 +157,6 @@ def initial(instance, routes):
         plt.plot(routes[i][:, 0], routes[i][:, 1], color = colors[i])
     plt.show()
 
-instance = instance((1200, 3))
+instance = instance((12, 3))
 routes = clarkeWright(instance)
 initial(instance, routes)
