@@ -27,6 +27,8 @@ def instance(size : tuple, plot : bool = False):
     return instance
 
 def partition(instance):
+
+    # FIXME: Random generation is fine
     _, depots, _, customers = instance
     D = len(depots)
 
@@ -86,7 +88,7 @@ def clarkeWright(instance):
     N, D = size
     customers = partition(instance)
     dist, index = graph(instance)
-    routes = {i: [] for i in range(D)}
+    routes = {i: np.array([]) for i in range(D)}
 
     for d in range(D):
         
@@ -157,6 +159,6 @@ def initial(instance, routes):
         plt.plot(routes[i][:, 0], routes[i][:, 1], color = colors[i])
     plt.show()
 
-instance = instance((12, 3))
-routes = clarkeWright(instance)
-initial(instance, routes)
+I = instance((9, 3))
+R = clarkeWright(I)
+initial(I, R)
