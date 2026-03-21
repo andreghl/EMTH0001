@@ -1,4 +1,3 @@
-import numpy as np
 import gymnasium as gym
 
 """
@@ -7,4 +6,14 @@ introduced in Chapter 3 using the techniques proposed in Chapter 4 of the book '
 Reinforcement Learning'. 
 """
 
-env = gym.make('FrozenLake8x8-v1')
+from env.strategy.greedy import epsilon_greedy
+
+env = gym.make('FrozenLake-v1')
+epsilon = 0.01
+n_episodes = 10000
+
+name, returns, Qe, actions = epsilon_greedy(env, epsilon, n_episodes)
+
+print(Qe[n_episodes - 1])
+
+print(env.unwrapped.P)
