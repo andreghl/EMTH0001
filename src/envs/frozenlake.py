@@ -6,7 +6,7 @@ introduced in Chapter 3 using the techniques proposed in Chapter 4 of the book '
 Reinforcement Learning'. 
 """
 
-from env.strategy.greedy import epsilon_greedy
+from envs.strategy.greedy import epsilon_greedy
 
 env = gym.make('FrozenLake-v1')
 epsilon = 0.01
