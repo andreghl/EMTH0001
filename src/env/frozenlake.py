@@ -15,5 +15,3 @@ n_episodes = 10000
 name, returns, Qe, actions = epsilon_greedy(env, epsilon, n_episodes)
 
 print(Qe[n_episodes - 1])
-
-print(env.unwrapped.P)

@@ -1,5 +1,10 @@
-from scipy.optimize import linprog
+import itertools
 import numpy as np
+from math import isclose
+from scipy.optimize import linprog
+
+# The code is taken from
+# https://github.com/jbansil/Game-Theory---Nucleolus-Solver/blob/main/Game_Theory_Code.ipynb
 
 def nucleolus(N : list, v : dict, X : list):
     n = len(N)

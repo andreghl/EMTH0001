@@ -7,7 +7,7 @@ from tqdm import tqdm
 import gym_bandits
 
 # Compare to behavior with full knowledge of the MDP
-from env.policy.methods import policy_iteration
+from policy.methods import policy_iteration
 
 """
 The goal of this python script is to train an RL agent to navigate a Multi-armed bandit env
