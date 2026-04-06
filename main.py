@@ -1,5 +1,5 @@
 import gymnasium as gym
-from src.envs.policy.methods import policy_iteration
+from src.bargain.policy.methods import policy_iteration
 
 env = gym.make('FrozenLake8x8-v1')
 P = env.unwrapped.P

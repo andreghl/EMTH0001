@@ -159,6 +159,6 @@ def initial(instance, routes):
         plt.plot(routes[i][:, 0], routes[i][:, 1], color = colors[i])
     plt.show()
 
-I = instance((9, 3))
+"""I = instance((9, 3))
 R = clarkeWright(I)
-initial(I, R)
+initial(I, R)"""
