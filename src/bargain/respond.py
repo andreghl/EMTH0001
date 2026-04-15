@@ -10,7 +10,7 @@ ACTIONS = {
 
 class Response(gym.Env):
 
-    def __init__(self, low : float = 0, high : float = 1):
+    def __init__(self, low : float = 0, high : float = 1, sigma : float = 1.0):
 
         self.action_space = gym.spaces.Discrete(2)
         self.observation_space = gym.spaces.Box(
@@ -21,6 +21,7 @@ class Response(gym.Env):
 
         self.low = min(low, high)
         self.high = max(low, high)
+        self.sigma = sigma
         self.offers : list = []
         self.steps = 0
 
@@ -30,7 +31,7 @@ class Response(gym.Env):
               options: dict[str, Any] | None = None):
         super().reset(seed = seed, options = options)
 
-        v = self.np_random.normal((self.high + self.low) / 2, (self.high - self.low))
+        v = self.np_random.normal((self.high + self.low) / 2, self.sigma * (self.high - self.low))
         self.valuation = np.clip(v, self.low, self.high)
         self.offers = []
         self.steps = 0
@@ -50,7 +51,7 @@ class Response(gym.Env):
         if action == 0:
             # rejects offer
             observation = self.get_offer()
-            reward = - 0.05
+            reward = - 0.01
             terminated = False
             truncated = False
             

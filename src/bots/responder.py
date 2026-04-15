@@ -61,7 +61,7 @@ class Responder():
             action = np.argmax(self.Q[state])
         return action
     
-    def q_learning(self,
+    def qlearn(self,
             gamma : float = 1.0,
             alpha : tuple[float, float] = (0.5, 0.01, 0.5),
             eps : tuple[float, float] = (1.0, 0.1, 0.9),
@@ -110,6 +110,52 @@ class Responder():
             track['val'][e] = self.env.unwrapped.valuation
             track['reject'][e] = track['actions'][e, 0] / np.sum(track['actions'][e, :])
 
+
+        V = np.max(self.Q, axis = 1)
+        pi = lambda s: {s: a for s, a in enumerate(np.argmax(self.Q, axis = 1))}[s]
+
+        return V, pi, track
+    
+    def eps_greedy(self, eps_min : float = 0.01, n_episodes : int = 1000):
+
+        track : dict[str, Any] = {
+            'Q': np.zeros((n_episodes,
+                           self.precision,
+                           self.env.action_space.n), dtype = np.float64),
+            'pi': [],
+            'returns': np.zeros(n_episodes, dtype = np.float64),
+            'actions': np.zeros((n_episodes,
+                                 self.env.action_space.n), dtype = np.int64),
+            'reject': np.zeros(n_episodes, dtype = np.float64),
+            'iter': np.zeros(n_episodes, dtype = np.int64),
+            'val': np.zeros(n_episodes, dtype = np.float64)
+            }
+        
+        for e in tqdm(range(n_episodes)):
+            obs, _ = self.env.reset()
+            done = False
+
+            eps = max(eps_min, 1.0 - e / (n_episodes * 0.8))
+
+            while not done:
+
+                action = self.select_action(obs, eps)
+                next_obs, reward, terminated, truncated, info = self.env.step(action)
+                done = terminated or truncated
+                state = self.get_state_index(obs)
+                next_state = self.get_state_index(next_obs)
+
+                self.N[state, action] += 1 
+                self.Q[state, action] += (reward - self.Q[state, action]) / self.N[state, action]
+                track['returns'][e] += reward
+                track['iter'][e] += 1
+                track['actions'][e, action] += 1
+                obs = next_obs
+
+            track['Q'][e] = self.Q.copy()
+            track['pi'].append(np.argmax(self.Q, axis = 1))
+            track['val'][e] = self.env.unwrapped.valuation
+            track['reject'][e] = track['actions'][e, 0] / np.sum(track['actions'][e, :])
 
         V = np.max(self.Q, axis = 1)
         pi = lambda s: {s: a for s, a in enumerate(np.argmax(self.Q, axis = 1))}[s]

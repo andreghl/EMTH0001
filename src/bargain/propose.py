@@ -57,7 +57,4 @@ class Proposal(gym.Env):
         return obs, reward, terminated, truncated, {}
 
     def evaluate(self, offer : float):
-        if offer >= self.valuation:
-            return 1
-        else:
-            return 0
+        return (offer >= self.valuation) * 1
