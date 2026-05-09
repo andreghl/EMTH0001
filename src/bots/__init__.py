@@ -1,1 +1,3 @@
-from bots.responder import Responder
+from .responder import Responder
+from .proposer import Proposer
+from . import tools

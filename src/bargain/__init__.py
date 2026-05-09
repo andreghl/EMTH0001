@@ -1,6 +1,7 @@
 from gymnasium.envs.registration import register
-from bargain.respond import Response
-from bargain.propose import Proposal
+from .respond import Response
+from .propose import Proposal
+from .bargain import Bargain
 
 register(
     id = 'Response-v0',

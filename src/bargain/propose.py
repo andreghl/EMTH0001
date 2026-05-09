@@ -16,6 +16,7 @@ class Proposal(gym.Env):
         self.action_space = gym.spaces.Box(
             low = min(low, high),
             high = max(low, high),
+            shape = (1,),    
             dtype = np.float64
         )
 
@@ -44,12 +45,12 @@ class Proposal(gym.Env):
             action
         ), f"{action!r} ({type(action)}) invalid"
 
-        obs = self.evaluate(action)
-        terminated, truncated = False
+        obs = self.evaluate(action[0])
+        terminated, truncated = False, False
         self.steps += 1
 
         if obs == 1:
-            reward = self.high - action
+            reward = self.high - action[0]
             terminated = True
         else:
             reward = - 0.05

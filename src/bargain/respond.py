@@ -10,12 +10,13 @@ ACTIONS = {
 
 class Response(gym.Env):
 
-    def __init__(self, low : float = 0, high : float = 1, sigma : float = 1.0):
+    def __init__(self, low : float = 0, high : float = 1, sigma : float = 0.1):
 
         self.action_space = gym.spaces.Discrete(2)
         self.observation_space = gym.spaces.Box(
             low = min(low, high), 
-            high = max(low, high), 
+            high = max(low, high),
+            shape = (1,),      
             dtype = np.float64
             )
 
@@ -58,7 +59,7 @@ class Response(gym.Env):
         elif action == 1:
             # accepts offer
             observation = np.array([self.offers[-1]], dtype = np.float64)
-            reward = self.offers[-1] - self.valuation
+            reward = self.valuation - self.offers[-1]
             terminated = True
             truncated = False
         else:
@@ -72,7 +73,7 @@ class Response(gym.Env):
         return observation, reward, terminated, truncated, {}
 
     def get_offer(self):
-        offer = self.np_random.normal(self.valuation, self.high - self.low)
+        offer = self.np_random.normal((self.high + self.low) / 2, self.sigma * (self.high - self.low))
         offer = np.clip(offer, self.low, self.high)
         self.offers.append(offer)
         return np.array([offer], dtype = np.float64)

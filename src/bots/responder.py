@@ -5,18 +5,7 @@ import numpy as np
 from tqdm import tqdm
 from typing import Any
 
-def decay(init_value, min_value, decay_ratio, 
-          max_steps, log_start=-2, log_base=10):
-    """
-    taken from the book
-    """
-    decay_steps = int(max_steps * decay_ratio)
-    rem_steps = max_steps - decay_steps
-    values = np.logspace(log_start, 0, decay_steps, base = log_base, endpoint=True)[::-1]
-    values = (values - values.min()) / (values.max() - values.min())
-    values = (init_value - min_value) * values + min_value
-    values = np.pad(values, (0, rem_steps), 'edge')
-    return values
+from .tools import decay
 
 class Responder():
 
@@ -85,7 +74,6 @@ class Responder():
 
         for e in tqdm(range(n_episodes), leave = False):
             obs, _ = self.env.reset()
-            
             done = False
 
             while not done:

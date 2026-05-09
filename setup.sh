@@ -1,0 +1,1 @@
+source /c/Users/andre/OneDrive/Code/EMTH0001/.venv/Scripts/activate

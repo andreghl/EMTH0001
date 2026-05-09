@@ -8,7 +8,7 @@ from sklearn.cluster import KMeans
 def instance(size : tuple, plot : bool = False):
     instance = None
     depots = [(-0.2, 0.173), (0.2, 0.173), (0, -0.173)]
-    radius = [0.3, 0.4, 0.6]
+    radius = [0.3] #[0.3, 0.4, 0.6]
     N, D = size
 
     d = random.sample(depots, k = D)
@@ -103,9 +103,9 @@ def clarkeWright(instance):
                 j = index[tuple(cj)]
 
                 if i != j:
-                    s = dist[d, i] + dist[d, j] - dist[i, j]
-                    savings.append((ci, cj, s))
-                    savings.append((cj, ci, s))
+                    saving = dist[d, i] + dist[d, j] - dist[i, j]
+                    savings.append((ci, cj, saving))
+                    savings.append((cj, ci, saving))
 
         savings.sort(key = lambda x: x[-1], reverse = True)
 
@@ -159,6 +159,8 @@ def initial(instance, routes):
         plt.plot(routes[i][:, 0], routes[i][:, 1], color = colors[i])
     plt.show()
 
-"""I = instance((9, 3))
+"""
+I = instance((9, 3))
 R = clarkeWright(I)
-initial(I, R)"""
+initial(I, R)
+"""
