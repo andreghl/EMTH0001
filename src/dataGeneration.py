@@ -15,12 +15,12 @@ import numpy as np
 from tqdm import tqdm
 from utils import generate
 
-runs = 10000
+runs = 1000000
 N = 9
 D = 3
 K = 2 ** D
 
-with h5py.File("data/instances.h5", "w") as f:
+with h5py.File("src/data/train.h5", "w") as f:
         
     Dm = f.create_dataset("Dm", shape = (runs, N + D, 5), dtype = np.float32)
     assign = f.create_dataset("assign", shape = (runs, N + D, K), dtype = np.int32)

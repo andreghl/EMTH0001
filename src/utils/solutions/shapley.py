@@ -9,7 +9,6 @@ def Shapley(N : list, v : dict) -> dict:
         for S in v:
             if i not in S:
                 s = len(S)
-
                 w = math.factorial(s) * math.factorial(n - s - 1)
                 w = w / math.factorial(n)
 

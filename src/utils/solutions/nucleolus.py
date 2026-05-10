@@ -51,7 +51,7 @@ def least_core_lp_dual(v, N, tight_eqs):
         raise RuntimeError(f"LP failed: {res.message}")
     x = res.x
     eps = x[n]
-    return {N[i]: x[i] for i in range(n)}, eps, S_list, res.ineqlin.marginals
+    return {N[i]: float(x[i]) for i in range(n)}, eps, S_list, res.ineqlin.marginals
 
 def nucleolus(N, v, tol = 1e-8, verbose = False):
     tight_eqs = {}
